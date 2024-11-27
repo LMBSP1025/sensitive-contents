@@ -1,0 +1,21 @@
+[debug] [2024-11-26T08:21:02.108Z] ----------------------------------------------------------------------
+[debug] [2024-11-26T08:21:02.110Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2024-11-26T08:21:02.110Z] CLI Version:   13.27.0
+[debug] [2024-11-26T08:21:02.111Z] Platform:      darwin
+[debug] [2024-11-26T08:21:02.111Z] Node Version:  v20.18.0
+[debug] [2024-11-26T08:21:02.111Z] Time:          Tue Nov 26 2024 17:21:02 GMT+0900 (Palau Time)
+[debug] [2024-11-26T08:21:02.111Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-26T08:21:02.114Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-26T08:21:02.114Z] > authorizing via signed-in user (snstiv1025@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/in-yumin/sensitive-contents
+

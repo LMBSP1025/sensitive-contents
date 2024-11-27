@@ -1,0 +1,51 @@
+.switch {
+    all: unset;
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 2rem;
+    color: currentColor;
+    border: 1px solid currentColor;
+    cursor: pointer;
+    --size: 24px;
+    height: var(--size);
+    width: var(--size);
+    content: "M";
+    transition: all 0.3s ease-in-out 0s !important;
+}
+
+[data-mode="system"] .switch::after {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    font-weight: 600;
+    font-size: calc(var(--size) / 2);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    content: "";
+}
+
+[data-mode="light"] .switch {
+    background-color: rgb(13, 13, 13);
+}
+
+[data-mode="dark"] .switch {
+    background-color: rgb(255, 255, 255);
+    border: none;
+}
+
+@keyframes n {
+    40% {
+        transform: rotate(-15deg);
+    }
+    80% {
+        transform: rotate(10deg);
+    }
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+}

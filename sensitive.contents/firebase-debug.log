@@ -1,0 +1,223 @@
+[debug] [2024-11-26T08:35:45.739Z] ----------------------------------------------------------------------
+[debug] [2024-11-26T08:35:45.741Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2024-11-26T08:35:45.741Z] CLI Version:   13.27.0
+[debug] [2024-11-26T08:35:45.741Z] Platform:      darwin
+[debug] [2024-11-26T08:35:45.741Z] Node Version:  v20.18.0
+[debug] [2024-11-26T08:35:45.741Z] Time:          Tue Nov 26 2024 17:35:45 GMT+0900 (Palau Time)
+[debug] [2024-11-26T08:35:45.741Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-26T08:35:45.744Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-26T08:35:45.744Z] > authorizing via signed-in user (snstiv1025@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/in-yumin/sensitive-contents/sensitive.contents
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-11-26T08:36:02.979Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:36:02.979Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:36:02.980Z] > refreshing access token with scopes: []
+[debug] [2024-11-26T08:36:02.981Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-11-26T08:36:02.981Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:36:03.341Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2024-11-26T08:36:03.341Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:36:03.341Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-11-26T08:36:03.653Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 401
+[debug] [2024-11-26T08:36:03.654Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[debug] [2024-11-26T08:36:03.654Z] Got a 401 Unauthenticated error for a call that required authentication. Refreshing tokens.
+[debug] [2024-11-26T08:36:03.654Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:36:03.654Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:36:03.654Z] > refreshing access token with scopes: []
+[debug] [2024-11-26T08:36:03.655Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-11-26T08:36:03.655Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:36:03.747Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2024-11-26T08:36:03.748Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:36:03.749Z] Request to https://firebase.googleapis.com/v1beta1/projects?pageSize=100 had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+[debug] [2024-11-26T08:36:03.750Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects?pageSize=100 had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at responseToError (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:52:12)
+    at RetryOperation._fn (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to list Firebase projects. See firebase-debug.log for more info.
+[debug] [2024-11-26T08:48:04.509Z] ----------------------------------------------------------------------
+[debug] [2024-11-26T08:48:04.511Z] Command:       /usr/local/bin/node /usr/local/bin/firebase
+[debug] [2024-11-26T08:48:04.511Z] CLI Version:   13.27.0
+[debug] [2024-11-26T08:48:04.511Z] Platform:      darwin
+[debug] [2024-11-26T08:48:04.511Z] Node Version:  v20.18.0
+[debug] [2024-11-26T08:48:04.511Z] Time:          Tue Nov 26 2024 17:48:04 GMT+0900 (Palau Time)
+[debug] [2024-11-26T08:48:04.511Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-26T08:48:04.513Z] TypeError: Cannot read properties of undefined (reading '0')
+    at Command.<anonymous> (/usr/local/lib/node_modules/firebase-tools/lib/index.js:58:21)
+    at Command.listener [as _actionHandler] (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:413:31)
+    at Command._parseCommand (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:914:14)
+    at Command.parse (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:717:10)
+    at Object.<anonymous> (/usr/local/lib/node_modules/firebase-tools/lib/bin/firebase.js:129:22)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2024-11-26T08:49:29.724Z] ----------------------------------------------------------------------
+[debug] [2024-11-26T08:49:29.725Z] Command:       /usr/local/bin/node /usr/local/bin/firebase
+[debug] [2024-11-26T08:49:29.726Z] CLI Version:   13.27.0
+[debug] [2024-11-26T08:49:29.726Z] Platform:      darwin
+[debug] [2024-11-26T08:49:29.726Z] Node Version:  v20.18.0
+[debug] [2024-11-26T08:49:29.726Z] Time:          Tue Nov 26 2024 17:49:29 GMT+0900 (Palau Time)
+[debug] [2024-11-26T08:49:29.726Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-26T08:49:29.727Z] TypeError: Cannot read properties of undefined (reading '0')
+    at Command.<anonymous> (/usr/local/lib/node_modules/firebase-tools/lib/index.js:58:21)
+    at Command.listener [as _actionHandler] (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:413:31)
+    at Command._parseCommand (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:914:14)
+    at Command.parse (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:717:10)
+    at Object.<anonymous> (/usr/local/lib/node_modules/firebase-tools/lib/bin/firebase.js:129:22)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2024-11-26T08:50:18.431Z] ----------------------------------------------------------------------
+[debug] [2024-11-26T08:50:18.433Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2024-11-26T08:50:18.433Z] CLI Version:   13.27.0
+[debug] [2024-11-26T08:50:18.433Z] Platform:      darwin
+[debug] [2024-11-26T08:50:18.433Z] Node Version:  v20.18.0
+[debug] [2024-11-26T08:50:18.433Z] Time:          Tue Nov 26 2024 17:50:18 GMT+0900 (Palau Time)
+[debug] [2024-11-26T08:50:18.433Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-26T08:50:18.436Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-26T08:50:18.437Z] > authorizing via signed-in user (snstiv1025@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/in-yumin/sensitive-contents/sensitive.contents
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-11-26T08:50:23.879Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:50:23.879Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:50:23.880Z] > refreshing access token with scopes: []
+[debug] [2024-11-26T08:50:23.881Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-11-26T08:50:23.882Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:50:24.230Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2024-11-26T08:50:24.230Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:50:24.231Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-11-26T08:50:24.538Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 401
+[debug] [2024-11-26T08:50:24.538Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[debug] [2024-11-26T08:50:24.538Z] Got a 401 Unauthenticated error for a call that required authentication. Refreshing tokens.
+[debug] [2024-11-26T08:50:24.538Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:50:24.539Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:50:24.539Z] > refreshing access token with scopes: []
+[debug] [2024-11-26T08:50:24.539Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-11-26T08:50:24.539Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:50:24.627Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2024-11-26T08:50:24.627Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:50:24.628Z] Request to https://firebase.googleapis.com/v1beta1/projects?pageSize=100 had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+[debug] [2024-11-26T08:50:24.629Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects?pageSize=100 had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at responseToError (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:52:12)
+    at RetryOperation._fn (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to list Firebase projects. See firebase-debug.log for more info.
+[debug] [2024-11-26T08:52:09.491Z] ----------------------------------------------------------------------
+[debug] [2024-11-26T08:52:09.493Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2024-11-26T08:52:09.493Z] CLI Version:   13.27.0
+[debug] [2024-11-26T08:52:09.493Z] Platform:      darwin
+[debug] [2024-11-26T08:52:09.493Z] Node Version:  v20.18.0
+[debug] [2024-11-26T08:52:09.493Z] Time:          Tue Nov 26 2024 17:52:09 GMT+0900 (Palau Time)
+[debug] [2024-11-26T08:52:09.494Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-26T08:52:09.497Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-26T08:52:09.497Z] > authorizing via signed-in user (snstiv1025@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/in-yumin/sensitive-contents/sensitive.contents
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  If you want to create a project in a Google Cloud organization or folder, please use "firebase projects:create" instead, and return to this command when you've created the project. 
+[debug] [2024-11-26T08:52:59.001Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:52:59.001Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:52:59.002Z] > refreshing access token with scopes: []
+[debug] [2024-11-26T08:52:59.003Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-11-26T08:52:59.003Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:52:59.266Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2024-11-26T08:52:59.266Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:52:59.266Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2024-11-26T08:52:59.266Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"sensitive.contents.","name":"sensitive-contents"}
+[debug] [2024-11-26T08:53:00.315Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 401
+[debug] [2024-11-26T08:53:00.315Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":401,"message":"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.","status":"UNAUTHENTICATED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"ACCESS_TOKEN_TYPE_UNSUPPORTED","metadata":{"service":"cloudresourcemanager.googleapis.com","method":"google.cloudresourcemanager.v1.Projects.CreateProject"}}]}}
+[debug] [2024-11-26T08:53:00.315Z] Got a 401 Unauthenticated error for a call that required authentication. Refreshing tokens.
+[debug] [2024-11-26T08:53:00.315Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:53:00.315Z] Checked if tokens are valid: false, expires at: 1702394484271
+[debug] [2024-11-26T08:53:00.315Z] > refreshing access token with scopes: []
+[debug] [2024-11-26T08:53:00.316Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-11-26T08:53:00.316Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:53:00.488Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2024-11-26T08:53:00.489Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-11-26T08:53:00.490Z] FirebaseError: Request to https://cloudresourcemanager.googleapis.com/v1/projects had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at responseToError (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:52:12)
+    at RetryOperation._fn (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to create project. See firebase-debug.log for more info.
+[debug] [2024-11-26T10:46:13.079Z] ----------------------------------------------------------------------
+[debug] [2024-11-26T10:46:13.084Z] Command:       /usr/local/bin/node /usr/local/bin/firebase
+[debug] [2024-11-26T10:46:13.084Z] CLI Version:   13.27.0
+[debug] [2024-11-26T10:46:13.084Z] Platform:      darwin
+[debug] [2024-11-26T10:46:13.084Z] Node Version:  v20.18.0
+[debug] [2024-11-26T10:46:13.084Z] Time:          Tue Nov 26 2024 19:46:13 GMT+0900 (Palau Time)
+[debug] [2024-11-26T10:46:13.084Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-26T10:46:13.086Z] TypeError: Cannot read properties of undefined (reading '0')
+    at Command.<anonymous> (/usr/local/lib/node_modules/firebase-tools/lib/index.js:58:21)
+    at Command.listener [as _actionHandler] (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:413:31)
+    at Command._parseCommand (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:914:14)
+    at Command.parse (/usr/local/lib/node_modules/firebase-tools/node_modules/commander/index.js:717:10)
+    at Object.<anonymous> (/usr/local/lib/node_modules/firebase-tools/lib/bin/firebase.js:129:22)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12)
+[error] 
+[error] Error: An unexpected error has occurred.
