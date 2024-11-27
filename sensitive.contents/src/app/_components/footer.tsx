@@ -217,6 +217,7 @@ playerRef.current = new (window as any).YT.Player("player", {
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseInt(event.target.value, 10);
+    console.log(event.target.value);
     setVolume(newVolume);
     if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
       playerRef.current.setVolume(newVolume);
