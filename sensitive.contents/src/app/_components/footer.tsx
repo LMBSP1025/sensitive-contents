@@ -74,7 +74,7 @@ const onPlayerReady = (event: { target: any }) => {
             if (playerRef.current) {
               playerRef.current.setVolume(50);
             }
-          }, 3);
+          }, 30);
           // Start interval to update currentTime every 100ms
           intervalRef.current = setInterval(() => {
             if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
