@@ -8,7 +8,7 @@ audioAuthor: "실리카겔 (Silica Gel)"
 audioId: "DIPxnt5vnhU"
 isList: false
 ogImage:
-  url: "/assets/blog/dynamic-routing/cover.jpg"
+  url: "/assets/blog/dynamic-routing/cover.png"
 ---
 하세요.
 
