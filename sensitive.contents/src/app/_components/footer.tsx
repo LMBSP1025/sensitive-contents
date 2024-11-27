@@ -221,6 +221,7 @@ playerRef.current = new (window as any).YT.Player("player", {
     setVolume(newVolume);
     if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
       playerRef.current.setVolume(newVolume);
+      console.log(volume)
     }
   };
 
