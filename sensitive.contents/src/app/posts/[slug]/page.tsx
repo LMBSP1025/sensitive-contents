@@ -10,8 +10,8 @@ import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import Footer from "@/app/_components/footer"; // Footer 컴포넌트 추가
 
-export default async function Post({ params }: Params) {
-  const post = getPostBySlug(params.slug);
+export default async function Post({ params }: { params: { slug: string } }) {
+const post = getPostBySlug(params.slug) as Post;
   if (!post) {
     return notFound();
   }
@@ -31,10 +31,19 @@ export default async function Post({ params }: Params) {
           <PostBody content={content} />
         </article>
       </Container>
-      <Footer audioId={post.audioId} audioTitle={post.audioTitle} audioAuthor={post.audioAuthor} isList={post.isList}></Footer>
+<Footer audioId={post.audioId || ''} audioTitle={post.audioTitle || ''} audioAuthor={post.audioAuthor || ''} isList={post.isList || false}></Footer>
     </main>
   );
 }
+
+type Post = {
+  audioId?: string;
+  audioTitle?: string;
+  audioAuthor?: string;
+  isList?: boolean;
+} & {
+  [key: string]: any;
+};
 
 type Params = {
   params: {

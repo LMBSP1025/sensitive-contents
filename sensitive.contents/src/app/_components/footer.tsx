@@ -18,7 +18,7 @@ type FooterProps = {
 };
 
 export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps) {
-  const playerRef = useRef<YT.Player | null>(null);
+const playerRef = useRef<any>(null); // Using any since YT types aren't available by default
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -49,12 +49,14 @@ if (!(window as any).onYouTubeIframeAPIReady) {
           };
         }
       } else {
-        // If YT is already loaded, create the player immediately
-        createPlayer();
+  // If YT is already loaded, create player in next tick
+  setTimeout(() => {
+    createPlayer();
+  }, 0);
       }
 
       // The API will call this function when the video player is ready.
-      function onPlayerReady(event: { target: YT.Player }) {
+const onPlayerReady = (event: { target: any }) => {
         console.log("Player Ready");
         console.log("Player Object:", event.target); // 추가된 로깅
         if (event.target && typeof event.target.getCurrentTime === 'function') {
@@ -85,12 +87,12 @@ if (!(window as any).onYouTubeIframeAPIReady) {
       }
 
       // Function to create the player
-      function createPlayer() {
+const createPlayer = () => {
         if (playerRef.current) {
           playerRef.current.destroy(); // 기존 플레이어 제거
         }
         if (isList) {
-          playerRef.current = new window.YT.Player("player", {
+playerRef.current = new (window as any).YT.Player("player", {
             playerVars: {
               listType: 'playlist',
               list: audioId,
@@ -105,7 +107,7 @@ if (!(window as any).onYouTubeIframeAPIReady) {
             },
           });
         } else {
-          playerRef.current = new window.YT.Player("player", {
+          playerRef.current = new (window as any).YT.Player("player", {
             videoId: audioId,
             playerVars: {
               autoplay: 1, // 자동 재생 설정
