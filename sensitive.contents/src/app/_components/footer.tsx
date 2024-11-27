@@ -329,7 +329,7 @@ playerRef.current = new (window as any).YT.Player("player", {
                       </svg>
                     </button>
                   </div>
-                  <input
+                  { navigator.maxTouchPoints == 0? (                    <input
                     ref={volumeRef}
                     type="range"
                     min="0"
@@ -338,7 +338,12 @@ playerRef.current = new (window as any).YT.Player("player", {
                     onChange={handleVolumeChange}
                     className="slider mx-0"
                     style={{ background: `linear-gradient(to right, #000000 0%, #000 ${volume}%, #ccc ${volume}%, #ccc 100%)` }}
-                  />
+                  />) : (
+                    <div></div>
+                  )
+
+                  }
+                  
                 </div>
               )}
             </div>
