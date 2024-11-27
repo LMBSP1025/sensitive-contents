@@ -18,7 +18,7 @@ type FooterProps = {
 };
 
 export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps) {
-const playerRef = useRef<any>(null); // Using any since YT types aren't available by default
+const playerRef = useRef<any>(null);  // Using any since YT types aren't available by default
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
