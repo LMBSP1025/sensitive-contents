@@ -62,10 +62,19 @@ const onPlayerReady = (event: { target: any }) => {
         if (event.target && typeof event.target.getCurrentTime === 'function') {
           setDuration(event.target.getDuration());
           setIsLoading(false); // 로딩 상태 해제
-          setVolume(50);
+          
+          setVolume(0);
+
           if (playerRef.current) {
-            playerRef.current.setVolume(50);
+            playerRef.current.setVolume(0);
           }
+          setTimeout(() => {
+            setVolume(50);
+
+            if (playerRef.current) {
+              playerRef.current.setVolume(50);
+            }
+          }, 3);
           // Start interval to update currentTime every 100ms
           intervalRef.current = setInterval(() => {
             if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
