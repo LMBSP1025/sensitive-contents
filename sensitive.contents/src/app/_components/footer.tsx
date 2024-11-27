@@ -68,6 +68,12 @@ const onPlayerReady = (event: { target: any }) => {
           if (playerRef.current) {
             playerRef.current.setVolume(0);
           }
+          // Start interval to update currentTime every 100ms
+          intervalRef.current = setInterval(() => {
+            if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
+              const newCurrentTime = playerRef.current.getCurrentTime();
+              setCurrentTime(newCurrentTime);
+
           setTimeout(() => {
             setVolume(50);
 
@@ -75,11 +81,6 @@ const onPlayerReady = (event: { target: any }) => {
               playerRef.current.setVolume(50);
             }
           }, 300);
-          // Start interval to update currentTime every 100ms
-          intervalRef.current = setInterval(() => {
-            if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
-              const newCurrentTime = playerRef.current.getCurrentTime();
-              setCurrentTime(newCurrentTime);
             } else {
               console.log("Player is not ready yet.");
             }
