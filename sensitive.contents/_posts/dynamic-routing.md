@@ -1,14 +1,14 @@
 ---
 title: "안녕"
 excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilities morbi tempus."
-coverImage: "/assets/blog/dynamic-routing/cover.png"
+coverImage: "/assets/blog/hello/cover.png"
 date: "2024-11-27T01:57:07.322Z"
-audioTitle: "T + Tik Tak Tok(feat. So!YoON!)"
-audioAuthor: "실리카겔 (Silica Gel)"
-audioId: "DIPxnt5vnhU"
+audioTitle: "60 BPM"
+audioAuthor: "HEARTCORE"
+audioId: "ox5tIxzpq8o"
 isList: false
 ogImage:
-  url: "/assets/blog/dynamic-routing/cover.png"
+  url: "/assets/blog/hello/cover.png"
 ---
 하세요.
 
@@ -21,7 +21,7 @@ ogImage:
 여하튼 이 블로그의 첫 게시글을 어떻게 기념하는 것이 좋을까 고민해봤습니다(별로안함). 아무래도 이 블로그를 소개하는 성격의 글이 가장 잘 어울리겠더이다.
 
 ## 소개
-![이미지 1](/assets/blog/dynamic-routing/IMG_6802.jpg)
+![이미지 1](/assets/blog/hello/IMG_6802.jpg)
 
 이 블로그는 Next.js의 블로그 스타터를 기반으로 만들어졌습니다. 해당 템플릿의 데모 웹사이트를 대놓고 비교해보면 제법 비슷한 구석이 많은만큼 Next.js는 손대기가 아직은 까다롭더라고요. 하나의 md 파일을 html 양식으로 변환해서 게시글 하나를 만드는 구조라고는 하는데 무슨 소리인지도 모르겠고, 지금 들리는 음악이 정상적으로 들리게끔 하는 데에만 며칠을 쓴 것 같습니다. 심지어 노래는 새로고침하면 자동재생도 안돼요. 브라우저 종특이라고 하니 새로고침은 안하시는 편이 좋겠습니다. 
   
