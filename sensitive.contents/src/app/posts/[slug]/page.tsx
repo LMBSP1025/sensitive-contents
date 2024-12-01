@@ -4,28 +4,20 @@ import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPosts } from "@/lib/api";
 import { CMS_NAME } from "@/lib/constants";
 import markdownToHtml from "@/lib/markdownToHtml";
+import Alert from "@/app/_components/alert";
 import Container from "@/app/_components/container";
 import Header from "@/app/_components/header";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import Footer from "@/app/_components/footer"; // Footer 컴포넌트 추가
 
-type Post = {
-  audioId?: string;
-  audioTitle?: string;
-  audioAuthor?: string;
-  isList?: boolean;
-} & {
-  [key: string]: any;
-};
+export default async function Post({ params }: { params: { slug: string } }) {
+  const post = getPostBySlug(params.slug) as Post;
+  if (!post) {
+    return notFound();
+  }
 
-type Params = {
-  params: {
-    slug: string;
-  };
-};
-
-export default function Post({ post, content }: { post: Post; content: string }) {
+  const content = await markdownToHtml(post.content || "");
   return (
     <main>
       <Container>
@@ -44,26 +36,47 @@ export default function Post({ post, content }: { post: Post; content: string })
   );
 }
 
+type Post = {
+  audioId?: string;
+  audioTitle?: string;
+  audioAuthor?: string;
+  isList?: boolean;
+} & {
+  [key: string]: any;
+};
+
+type Comment = {
+  text: string;
+};
+
+type Params = {
+  params: {
+    slug: string;
+  };
+};
+
+export function generateMetadata({ params }: Params): Metadata {
+  const post = getPostBySlug(params.slug);
+
+  if (!post) {
+    return notFound();
+  }
+
+  const title = `${post.title} / sensitive.contents`;
+
+  return {
+    title,
+    openGraph: {
+      title,
+      images: [post.ogImage.url],
+    },
+  };
+}
+
 export async function generateStaticParams() {
   const posts = await getAllPosts(); // Ensure this function is asynchronous
 
   return posts.map((post) => ({
     slug: post.slug,
   }));
-}
-
-export async function getServerSideProps({ params }: Params) {
-  const post = getPostBySlug(params.slug) as Post;
-  if (!post) {
-    return { notFound: true };
-  }
-
-  const content = await markdownToHtml(post.content || "");
-
-  return {
-    props: {
-      post,
-      content,
-    },
-  };
 }
