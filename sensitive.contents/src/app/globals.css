@@ -42,3 +42,9 @@ input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     accent-color: #ffca1d;
 }
+
+.textinput {
+    border: 0;
+    outline: none;
+    background-color: #f7f7f7;
+}
