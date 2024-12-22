@@ -61,6 +61,7 @@ type Post = {
   audioAuthor?: string;
   isList?: boolean;
   isHtml?: boolean;
+  ogImage?: { url: string }; // Ensure ogImage is optional
 } & {
   [key: string]: any;
 };
@@ -84,11 +85,14 @@ export function generateMetadata({ params }: Params): Metadata {
 
   const title = `${post.title} / sensitive.contents`;
 
+  // Check if ogImage and url exist before accessing them
+  const images = post.ogImage && post.ogImage.url ? [post.ogImage.url] : [];
+
   return {
     title,
     openGraph: {
       title,
-      images: [post.ogImage.url],
+      images,
     },
   };
 }
