@@ -10,6 +10,7 @@ import Header from "@/app/_components/header";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import Footer from "@/app/_components/footer"; // Footer 컴포넌트 추가
+import ThreeCanvas from "@/app/_components/three-canvas"; // ThreeCanvas 컴포넌트 추가
 
 export default async function Post({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug) as Post;
@@ -40,13 +41,14 @@ export default async function Post({ params }: { params: { slug: string } }) {
   return (
     <main>
       <Container>
-        <Header />
+      <Header />
+        {post.showCanvas && <ThreeCanvas />} {/* showCanvas 속성 기반 조건부 렌더링 */}
         <article className="mb-32">
-          <PostHeader
+        {!post.showCanvas && <PostHeader
             title={post.title}
             coverImage={post.coverImage}
             date={post.date}
-          />
+          />}
           <PostBody content={content} />
         </article>
       </Container>
@@ -62,6 +64,7 @@ type Post = {
   isList?: boolean;
   isHtml?: boolean;
   ogImage?: { url: string }; // Ensure ogImage is optional
+  showCanvas?: boolean; // showCanvas 속성 추가
 } & {
   [key: string]: any;
 };

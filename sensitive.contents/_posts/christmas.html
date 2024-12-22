@@ -1,3 +1,4 @@
+<!-- sensitive.contents/_posts/christmas.html -->
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -9,16 +10,17 @@
         {
             "title": "크리스마스",
             "excerpt": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilities morbi tempus.",
-            "coverImage": "/assets/blog/2024-december/B111D10C-A7C1-41F3-BDF5-7C3913B703E6_1_201_a.jpeg",
-            "date": "2024-12-25T01:57:07.322Z",
-            "audioTitle": "12월 플레이리스트",
-            "audioAuthor": "한로로, Colde, CAMO, Kid Milli, Tyler the Creator, Balming Tiger, Loopy, OSUN, JP, 실리카겔, 터치드, 쏜애플, (여자)아이들, 검정치마",
-            "audioId": "PLdIuWOmujlBVvD0sbTUJlRnU4uuGem3oG",
+            "coverImage": "/assets/blog/christmas/christmas.png",
+            "date": "2024-12-23T00:52:07.322Z",
+            "audioTitle": "CHRISTMAS",
+            "audioAuthor": "♥",
+            "audioId": "PLdIuWOmujlBXWyi7m3imz_t4o_IH8zv9N",
             "isList": true,
             "ogImage": {
-                "url": "/assets/blog/2024-december/B111D10C-A7C1-41F3-BDF5-7C3913B703E6_1_201_a.jpeg"
+                "url": "/assets/blog/christmas/christmas.png"
             },
-            "isHtml": true
+            "isHtml": true,
+            "showCanvas": true
         }
     </script>
     <style>
@@ -33,52 +35,6 @@
 </head>
 
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script>
-        // Scene setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // Add ambient light
-        const ambientLight = new THREE.AmbientLight(0xffffff, 10);
-        scene.add(ambientLight);
-        // Load GLTF model
-        const loader = new THREE.GLTFLoader();
-        loader.load('../public/assets/blog/christmas/scene.gltf', function(gltf) {
-            scene.add(gltf.scene);
-        }, undefined, function(error) {
-            console.error('An error happened', error);
-        });
-
-        camera.position.z = 10;
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Rotate the scene
-            scene.rotation.y += 0.01;
-
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        // Resize event listener
-        window.addEventListener('resize', onWindowResize, false);
-
-        function onWindowResize() {
-            // Update camera aspect ratio
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-
-            // Update renderer size
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-    </script>
 </body>
 
 </html>

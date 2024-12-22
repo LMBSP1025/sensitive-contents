@@ -1,5 +1,3 @@
-// sensitive.contents/src/app/_components/footer.tsx
-
 "use client"; // Mark this component as a Client Component
 
 import { useEffect, useRef, useState } from "react";
@@ -18,7 +16,7 @@ type FooterProps = {
 };
 
 export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps) {
-const playerRef = useRef<any>(null);  // Using any since YT types aren't available by default
+  const playerRef = useRef<any>(null);  // Using any since YT types aren't available by default
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -28,12 +26,13 @@ const playerRef = useRef<any>(null);  // Using any since YT types aren't availab
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const [volume, setVolume] = useState(50); // 볼륨 상태 추가
+  const [isVolumeInitialized, setIsVolumeInitialized] = useState(false); // 볼륨 초기화 여부 추가
 
   useEffect(() => {
     const url = `${apiUrl}?part=${part}&id=${audioId}&key=${apiKey}`; // 완성된 요청 URL
     if (typeof window !== 'undefined') {
       // Load the YouTube IFrame Player API script
-if (!(window as any).YT) {
+      if (!(window as any).YT) {
         const tag = document.createElement("script");
         tag.src = "https://www.youtube.com/iframe_api";
         const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -42,45 +41,50 @@ if (!(window as any).YT) {
         }
 
         // Ensure onYouTubeIframeAPIReady is set only once
-if (!(window as any).onYouTubeIframeAPIReady) {
-(window as any).onYouTubeIframeAPIReady = () => {
+        if (!(window as any).onYouTubeIframeAPIReady) {
+          (window as any).onYouTubeIframeAPIReady = () => {
             console.log("YouTube IFrame Player API Ready");
             createPlayer();
           };
         }
       } else {
-  // If YT is already loaded, create player in next tick
-  setTimeout(() => {
-    createPlayer();
-  }, 0);
+        // If YT is already loaded, create player in next tick
+        setTimeout(() => {
+          createPlayer();
+        }, 0);
       }
 
       // The API will call this function when the video player is ready.
-const onPlayerReady = (event: { target: any }) => {
+      const onPlayerReady = (event: { target: any }) => {
         console.log("Player Ready");
         console.log("Player Object:", event.target); // 추가된 로깅
         if (event.target && typeof event.target.getCurrentTime === 'function') {
           setDuration(event.target.getDuration());
           setIsLoading(false); // 로딩 상태 해제
-          
-          setVolume(0);
 
-          if (playerRef.current) {
-            playerRef.current.setVolume(0);
+          // Set the volume to 0 initially
+
+
+          // Set the volume to 50 after a delay of 0.3 seconds
+          if (!isVolumeInitialized) {
+            if (playerRef.current) {
+              setVolume(0)
+              playerRef.current.setVolume(0);
+            }
+            setTimeout(() => {
+              if (playerRef.current) {
+                setVolume(50)
+                playerRef.current.setVolume(50);
+              }
+              setIsVolumeInitialized(true); // 볼륨 초기화 완료 표시
+            }, 500);
           }
+
           // Start interval to update currentTime every 100ms
           intervalRef.current = setInterval(() => {
             if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
               const newCurrentTime = playerRef.current.getCurrentTime();
               setCurrentTime(newCurrentTime);
-
-          setTimeout(() => {
-            setVolume(50);
-
-            if (playerRef.current) {
-              playerRef.current.setVolume(50);
-            }
-          }, 300);
             } else {
               console.log("Player is not ready yet.");
             }
@@ -97,12 +101,12 @@ const onPlayerReady = (event: { target: any }) => {
       }
 
       // Function to create the player
-const createPlayer = () => {
+      const createPlayer = () => {
         if (playerRef.current) {
           playerRef.current.destroy(); // 기존 플레이어 제거
         }
         if (isList) {
-playerRef.current = new (window as any).YT.Player("player", {
+          playerRef.current = new (window as any).YT.Player("player", {
             playerVars: {
               listType: 'playlist',
               list: audioId,
@@ -148,7 +152,7 @@ playerRef.current = new (window as any).YT.Player("player", {
         }
       };
     }
-  }, [audioId, audioTitle, audioAuthor]); // 의존성 배열 추가
+  }, [audioId, audioTitle, audioAuthor, isVolumeInitialized]); // 의존성 배열 추가
 
   const togglePlay = () => {
     if (playerRef.current && typeof playerRef.current.playVideo === 'function' && typeof playerRef.current.pauseVideo === 'function') {
@@ -227,11 +231,10 @@ playerRef.current = new (window as any).YT.Player("player", {
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseInt(event.target.value, 10);
-    console.log(event.target.value);
+    console.log(event.target.value, newVolume);
     setVolume(newVolume);
     if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
       playerRef.current.setVolume(newVolume);
-      console.log(volume)
     }
   };
 
@@ -256,76 +259,77 @@ playerRef.current = new (window as any).YT.Player("player", {
       )}
       <Container>
         <div id="player" className="w-full max-w-screen-sm hidden"></div> {/* Ensure the player div is not hidden */}
-          {audioId ? (
-            <div className="py-1.5 flex flex-row lg:flex-row justify-between items-center">
-              {isLoading ? (
-                <div></div>
-              ) : (
-                  <div className="w-full pl-0 flex-grow-1 mr-4 whitespace-nowrap overflow-hidden overflow-ellipsis">
-                      {!isList ? (
-                        <a href={`https://www.youtube.com/watch?v=${audioId}`}>
-                          {audioTitle}
-                        </a>
-                      ) : (
-                        <a href={`https://www.youtube.com/playlist?list=${audioId}`}>
-                          {audioTitle}
-                        </a>
-                      )}
-                      <h2 className="text-gray-400 overflow-hidden overflow-ellipsis">{audioAuthor}</h2>
-                  </div>
-              )}
-              {isLoading ? (
-                <div></div> // 로딩 중일 때 표시할 내용
-              ) : (
-                <div className="w-20 block flex-shrink-0">
-                  <div className="float-none">
-                    <button onClick={prevVideo} className="float-left mt-1 ml-0 mx-2 my-0 p-0 bg-transparent border-none text-black focus:outline-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        fill="currentcolor"
-                        viewBox="0 0 13 13"
-                      >
-                        <polyline points="0 0 3 0 3 6 13 0 13 13 3 7 3 13 0 13" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={togglePlay}
-                      className="float-left mx-2 mt-1 my-0 p-0 bg-transparent border-none text-black focus:outline-none"
+        {audioId ? (
+          <div className="py-1.5 flex flex-row lg:flex-row justify-between items-center">
+            {isLoading ? (
+              <div></div>
+            ) : (
+              <div className="w-full pl-0 flex-grow-1 mr-4 whitespace-nowrap overflow-hidden overflow-ellipsis">
+                {!isList ? (
+                  <a href={`https://www.youtube.com/watch?v=${audioId}`}>
+                    {audioTitle}
+                  </a>
+                ) : (
+                  <a href={`https://www.youtube.com/playlist?list=${audioId}`}>
+                    {audioTitle}
+                  </a>
+                )}
+                <h2 className="text-gray-400 overflow-hidden overflow-ellipsis">{audioAuthor}</h2>
+              </div>
+            )}
+            {isLoading ? (
+              <div></div> // 로딩 중일 때 표시할 내용
+            ) : (
+              <div className="w-20 block flex-shrink-0">
+                <div className="float-none">
+                  <button onClick={prevVideo} className="float-left mt-1 ml-0 mx-2 my-0 p-0 bg-transparent border-none text-black focus:outline-none">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="currentcolor"
+                      viewBox="0 0 13 13"
                     >
-                      {isPlaying ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="currentcolor"
-                          viewBox="0 0 13 13"
-                          stroke="currentColor"
-                        >
-                          <path strokeWidth={9} d="M0 0v13m13-13v13" />
-                        </svg>
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="currentcolor"
-                          viewBox="0 0 13 13"
-                        >
-                          <polyline points="0 0 13 6.5 0 13" />
-                        </svg>
-                      )}
-                    </button>
-                    <button onClick={nextVideo} className="float-left mx-2 mr-0 mt-1 my-0 p-0 bg-transparent border-none text-black focus:outline-none">
+                      <polyline points="0 0 3 0 3 6 13 0 13 13 3 7 3 13 0 13" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={togglePlay}
+                    className="float-left mx-2 mt-1 my-0 p-0 bg-transparent border-none text-black focus:outline-none"
+                  >
+                    {isPlaying ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="currentcolor"
+                        viewBox="0 0 13 13"
+                        stroke="currentColor"
+                      >
+                        <path strokeWidth={9} d="M0 0v13m13-13v13" />
+                      </svg>
+                    ) : (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4"
                         fill="currentcolor"
                         viewBox="0 0 13 13"
                       >
-                        <polyline points="0 0 10 6 10 0 13 0 13 13 10 13 10 7 0 13 0 0" />
+                        <polyline points="0 0 13 6.5 0 13" />
                       </svg>
-                    </button>
-                  </div>
-                  { navigator.maxTouchPoints == 0? (                    <input
+                    )}
+                  </button>
+                  <button onClick={nextVideo} className="float-left mx-2 mr-0 mt-1 my-0 p-0 bg-transparent border-none text-black focus:outline-none">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="currentcolor"
+                      viewBox="0 0 13 13"
+                    >
+                      <polyline points="0 0 10 6 10 0 13 0 13 13 10 13 10 7 0 13 0 0" />
+                    </svg>
+                  </button>
+                </div>
+                { navigator.maxTouchPoints == 0 ? (
+                  <input
                     ref={volumeRef}
                     type="range"
                     min="0"
@@ -334,18 +338,16 @@ playerRef.current = new (window as any).YT.Player("player", {
                     onChange={handleVolumeChange}
                     className="slider mx-0"
                     style={{ background: `linear-gradient(to right, #000000 0%, #000 ${volume}%, #ccc ${volume}%, #ccc 100%)` }}
-                  />) : (
-                    <div></div>
-                  )
-
-                  }
-                  
-                </div>
-              )}
-            </div>
-          ) : (
-            <div></div>
-          )}
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div></div>
+        )}
       </Container>
     </footer>
   );
