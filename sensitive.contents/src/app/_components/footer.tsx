@@ -256,15 +256,12 @@ playerRef.current = new (window as any).YT.Player("player", {
       )}
       <Container>
         <div id="player" className="w-full max-w-screen-sm hidden"></div> {/* Ensure the player div is not hidden */}
-        <div>
           {audioId ? (
             <div className="py-1.5 flex flex-row lg:flex-row justify-between items-center">
               {isLoading ? (
-                <div className="w-max"></div>
+                <div></div>
               ) : (
-                <div>
-                  <div className="pl-0 whitespace-nowrap overflow-ellipsis max-w-xl overflow-hidden">
-                    <div className="pl-0 mr-3 whitespace-nowrap overflow-ellipsis max-w-xl overflow-hidden">
+                  <div className="w-full pl-0 flex-grow-1 mr-4 whitespace-nowrap overflow-hidden overflow-ellipsis">
                       {!isList ? (
                         <a href={`https://www.youtube.com/watch?v=${audioId}`}>
                           {audioTitle}
@@ -274,15 +271,13 @@ playerRef.current = new (window as any).YT.Player("player", {
                           {audioTitle}
                         </a>
                       )}
-                      <h2 className="text-gray-400">{audioAuthor}</h2>
-                    </div>
+                      <h2 className="text-gray-400 overflow-hidden overflow-ellipsis">{audioAuthor}</h2>
                   </div>
-                </div>
               )}
               {isLoading ? (
                 <div></div> // 로딩 중일 때 표시할 내용
               ) : (
-                <div className="w-20">
+                <div className="w-20 block flex-shrink-0">
                   <div className="float-none">
                     <button onClick={prevVideo} className="float-left mt-1 ml-0 mx-2 my-0 p-0 bg-transparent border-none text-black focus:outline-none">
                       <svg
@@ -351,7 +346,6 @@ playerRef.current = new (window as any).YT.Player("player", {
           ) : (
             <div></div>
           )}
-        </div>
       </Container>
     </footer>
   );

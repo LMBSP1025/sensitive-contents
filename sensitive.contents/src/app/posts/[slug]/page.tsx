@@ -1,4 +1,5 @@
 // sensitive.contents/src/app/posts/[slug]/page.tsx
+// sensitive.contents/src/app/posts/[slug]/page.tsx
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPosts } from "@/lib/api";
@@ -17,7 +18,24 @@ export default async function Post({ params }: { params: { slug: string } }) {
     return notFound();
   }
 
-  const content = await markdownToHtml(post.content || "");
+  console.log("로드된 포스트:", post); // 콘솔 로그 추가
+
+  let content = post.content;
+  let isHtml = post.isHtml || false;
+
+  if (isHtml) {
+    // HTML 파일인 경우 markdownToHtml을 건너뛰고 직접 사용
+    // <body> 태그 안의 내용만 추출
+    const bodyMatch = content.match(/<body>(.*?)<\/body>/s);
+    if (bodyMatch && bodyMatch[1]) {
+      content = bodyMatch[1].trim();
+    }
+  } else {
+    // Markdown 파일인 경우 markdownToHtml을 사용
+    content = await markdownToHtml(post.content || "", isHtml);
+  }
+  console.log("변환된 내용:\n", content); // 콘솔 로그 추가
+
   return (
     <main>
       <Container>
@@ -41,6 +59,7 @@ type Post = {
   audioTitle?: string;
   audioAuthor?: string;
   isList?: boolean;
+  isHtml?: boolean;
 } & {
   [key: string]: any;
 };
