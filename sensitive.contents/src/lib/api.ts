@@ -1,3 +1,4 @@
+// sensitive.contents/src/lib/api.ts
 import { Post } from "@/interfaces/post";
 import fs from "fs";
 import matter from "gray-matter";
@@ -35,16 +36,21 @@ export function getPostBySlug(slug: string) {
     content = markdownContent;
   } else {
     // HTML 파일에서 메타데이터 추출
-    const metadataMatch = fileContents.match(/<script type="application\/json" id="post-metadata">(.*?)<\/script>/s);
-    if (metadataMatch && metadataMatch[1]) {
+    const metadataStart = fileContents.indexOf('<script type="application/json" id="post-metadata">');
+    const metadataEnd = fileContents.indexOf('</script>', metadataStart);
+
+    if (metadataStart !== -1 && metadataEnd !== -1) {
       try {
-        data = JSON.parse(metadataMatch[1]);
+        const metadataJson = fileContents.substring(metadataStart + 45, metadataEnd);
+        data = JSON.parse(metadataJson);
         // 메타데이터를 제거한 나머지 내용 추출
-        content = fileContents.replace(metadataMatch[0], "").trim();
+        content = fileContents.substring(metadataEnd + 9).trim();
         // <body> 태그 안의 내용만 추출
-        const bodyMatch = content.match(/<body>(.*?)<\/body>/s);
-        if (bodyMatch && bodyMatch[1]) {
-          content = bodyMatch[1].trim();
+        const bodyStart = content.indexOf('<body>');
+        const bodyEnd = content.indexOf('</body>');
+
+        if (bodyStart !== -1 && bodyEnd !== -1) {
+          content = content.substring(bodyStart + 6, bodyEnd).trim();
         }
       } catch (error) {
         console.error("Failed to parse metadata from HTML:", error);
