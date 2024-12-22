@@ -1,5 +1,4 @@
 // sensitive.contents/src/app/posts/[slug]/page.tsx
-// sensitive.contents/src/app/posts/[slug]/page.tsx
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPosts } from "@/lib/api";
@@ -26,9 +25,11 @@ export default async function Post({ params }: { params: { slug: string } }) {
   if (isHtml) {
     // HTML 파일인 경우 markdownToHtml을 건너뛰고 직접 사용
     // <body> 태그 안의 내용만 추출
-    const bodyMatch = content.match('<body>([\s\S]*?)</body>');
-    if (bodyMatch && bodyMatch[1]) {
-      content = bodyMatch[1].trim();
+    const bodyStart = content.indexOf("<body>");
+    const bodyEnd = content.indexOf("</body>");
+
+    if (bodyStart !== -1 && bodyEnd !== -1) {
+      content = content.substring(bodyStart + 6, bodyEnd).trim();
     }
   } else {
     // Markdown 파일인 경우 markdownToHtml을 사용
