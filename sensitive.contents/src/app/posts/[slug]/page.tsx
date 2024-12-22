@@ -26,7 +26,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
   if (isHtml) {
     // HTML 파일인 경우 markdownToHtml을 건너뛰고 직접 사용
     // <body> 태그 안의 내용만 추출
-    const bodyMatch = content.match(/<body>(.*?)<\/body>/s);
+    const bodyMatch = content.match('<body>([\s\S]*?)</body>');
     if (bodyMatch && bodyMatch[1]) {
       content = bodyMatch[1].trim();
     }
