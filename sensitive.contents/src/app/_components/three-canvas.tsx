@@ -15,7 +15,7 @@ const ThreeCanvas = () => {
     const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 100, 50);
+    const pointLight = new THREE.PointLight(0xffffff, 100, 6);
     pointLight.position.set(0, 5, 0);
     scene.add(pointLight);
 
