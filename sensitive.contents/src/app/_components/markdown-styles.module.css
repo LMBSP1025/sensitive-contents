@@ -29,6 +29,7 @@
 .markdown table {
   width: 100%;
   border-collapse: collapse;
+  font-size: smaller;
 }
 
 .markdown table th,
@@ -38,6 +39,7 @@
 
 .markdown table th {
   background-color: #f2f2f2;
+  
 }
 
 /* 각 열의 너비 설정 */
