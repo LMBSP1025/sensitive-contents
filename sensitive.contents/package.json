@@ -1,39 +1,40 @@
 {
-  "private": true,
-  "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "classnames": "^2.5.1",
-    "date-fns": "^3.6.0",
-    "firebase": "^11.0.2",
-    "gray-matter": "^4.0.3",
-    "hast-to-hyperscript": "^10.0.3",
-    "hast-util-to-html": "^9.0.4",
-    "mdast-util-to-hast": "^13.2.0",
-    "mdast-util-to-string": "^4.0.0",
-    "next": "latest",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "remark": "^15.0.1",
-    "remark-gfm": "^4.0.0",
-    "remark-html": "^16.0.1",
-    "remark-parse": "^11.0.0",
-    "remark-stringify": "^11.0.0",
-    "three": "^0.171.0",
-    "three.js": "^0.77.0",
-    "unist-util-visit": "^5.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.14.8",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@types/three": "^0.171.0",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4",
-    "typescript": "^5.5.2"
-  }
+    "private": true,
+    "scripts": {
+        "dev": "next",
+        "build": "next build",
+        "start": "next start"
+    },
+    "dependencies": {
+        "classnames": "^2.5.1",
+        "date-fns": "^3.6.0",
+        "firebase": "^11.0.2",
+        "gray-matter": "^4.0.3",
+        "hast-to-hyperscript": "^10.0.3",
+        "hast-util-to-html": "^9.0.4",
+        "mdast-util-to-hast": "^13.2.0",
+        "mdast-util-to-string": "^4.0.0",
+        "next": "latest",
+        "next-auth": "^4.24.11",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "remark": "^15.0.1",
+        "remark-gfm": "^4.0.0",
+        "remark-html": "^16.0.1",
+        "remark-parse": "^11.0.0",
+        "remark-stringify": "^11.0.0",
+        "three": "^0.171.0",
+        "three.js": "^0.77.0",
+        "unist-util-visit": "^5.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.14.8",
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "^18.3.0",
+        "@types/three": "^0.171.0",
+        "autoprefixer": "^10.4.19",
+        "postcss": "^8.4.38",
+        "tailwindcss": "^3.4.4",
+        "typescript": "^5.5.2"
+    }
 }
