@@ -11,6 +11,12 @@ import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import Footer from "@/app/_components/footer"; // Footer 컴포넌트 추가
 import ThreeCanvas from "@/app/_components/three-canvas"; // ThreeCanvas 컴포넌트 추가
+import dynamic from 'next/dynamic';
+
+// 클라이언트 컴포넌트를 동적으로 불러옴
+const CommentSection = dynamic(() => import('@/app/_components/comments/CommentSection'), {
+  ssr: false
+});
 
 export default async function Post({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug) as Post;
@@ -41,15 +47,16 @@ export default async function Post({ params }: { params: { slug: string } }) {
   return (
     <main>
       <Container>
-      <Header />
+        <Header />
         {post.showCanvas && <ThreeCanvas />} {/* showCanvas 속성 기반 조건부 렌더링 */}
         <article className="mb-32">
-        {!post.showCanvas && <PostHeader
+          {!post.showCanvas && <PostHeader
             title={post.title}
             coverImage={post.coverImage}
             date={post.date}
           />}
           <PostBody content={content} />
+          <CommentSection /> {/* 여기에 CommentSection 추가 */}
         </article>
       </Container>
       <Footer audioId={post.audioId || ''} audioTitle={post.audioTitle || ''} audioAuthor={post.audioAuthor || ''} isList={post.isList || false}></Footer>
