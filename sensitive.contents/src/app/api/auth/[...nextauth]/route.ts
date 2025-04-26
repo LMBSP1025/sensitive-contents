@@ -1,22 +1,15 @@
 import NextAuth from "next-auth";
-import InstagramProvider from "next-auth/providers/instagram";
+import EmailProvider from "next-auth/providers/email";
 
 const handler = NextAuth({
   providers: [
-    InstagramProvider({
-      clientId: process.env.INSTAGRAM_CLIENT_ID || "",
-      clientSecret: process.env.INSTAGRAM_CLIENT_SECRET || "",
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
-      if (account?.access_token) {
-        token.accessToken = account.access_token;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
+    async session({ session }) {
       return session;
     },
   },
