@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { CMS_NAME, HOME_OG_IMAGE_URL } from "@/lib/constants";
 import ClientLayout from "@/app/_components/ClientLayout";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,9 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       </head>
       <body className={`${inter.className} dark:bg-slate-900 dark:text-slate-400`}>
-        <ClientLayout inter={inter}>{children}</ClientLayout>
+        <Providers>
+          <ClientLayout inter={inter}>{children}</ClientLayout>
+        </Providers>
       </body>
     </html>
   );
