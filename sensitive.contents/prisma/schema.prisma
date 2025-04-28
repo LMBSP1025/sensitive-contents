@@ -6,13 +6,14 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:[YOUR-PASSWORD]@db.qcpshvhshvxeudzdwsxq.supabase.co:5432/postgres"
+  url      = env("DATABASE_URL")
 }
+
+// ... (model 정의)
 
 model Account {
   id                String  @id @default(cuid())
@@ -58,3 +59,4 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+ 
