@@ -7,6 +7,7 @@ audioTitle: "12월 플레이리스트"
 audioAuthor: "한로로, Colde, CAMO, Kid Milli, Tyler the Creator, Balming Tiger, Loopy, OSUN, JP, 실리카겔, 터치드, 쏜애플, (여자)아이들, 검정치마"
 audioId: "PLdIuWOmujlBVvD0sbTUJlRnU4uuGem3oG"
 isList: true
+allowComments: true
 ogImage:
   url: "/assets/blog/2024-december/B111D10C-A7C1-41F3-BDF5-7C3913B703E6_1_201_a.jpeg"
 ---

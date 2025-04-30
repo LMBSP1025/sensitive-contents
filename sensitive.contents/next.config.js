@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: [
-            'platform-lookaside.fbsbx.com',
-            'graph.facebook.com',
-            'scontent.xx.fbcdn.net',
+        remotePatterns: [{
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+            },
+            // 필요시 다른 도메인도 추가
         ],
     },
 };

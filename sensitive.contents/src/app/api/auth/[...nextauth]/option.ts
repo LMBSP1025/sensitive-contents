@@ -1,5 +1,7 @@
 import { AuthOptions } from "next-auth";
 import FacebookProvider from "next-auth/providers/facebook";
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -11,6 +13,10 @@ export const authOptions: AuthOptions = {
           scope: "public_profile,email"
         }
       }
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   callbacks: {
@@ -29,3 +35,5 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+export default NextAuth(authOptions);

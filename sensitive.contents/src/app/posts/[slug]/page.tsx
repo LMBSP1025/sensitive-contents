@@ -56,7 +56,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
             date={post.date}
           />}
           <PostBody content={content} />
-          <CommentSection /> {/* 여기에 CommentSection 추가 */}
+          {post.allowComments && <CommentSection postId={post.id} />} {/* 여기에 CommentSection 추가 */}
         </article>
       </Container>
       <Footer audioId={post.audioId || ''} audioTitle={post.audioTitle || ''} audioAuthor={post.audioAuthor || ''} isList={post.isList || false}></Footer>

@@ -53,7 +53,22 @@ export function getPostBySlug(slug: string) {
     }
   }
 
-  return { ...data, slug: realSlug, content } as Post;
+  // id와 title을 안전하게 추출
+  const id = realSlug; // 파일명(slug)을 id로 사용
+  const title = (data as any).title || ""; // frontMatter/메타데이터에 title이 있으면 사용
+
+  return {
+    id,
+    title,
+    date: (data as any).date || "",
+    coverImage: (data as any).coverImage || "",
+    author: (data as any).author || "",
+    excerpt: (data as any).excerpt || "",
+    ogImage: (data as any).ogImage || { url: "" },
+    ...data,
+    slug: realSlug,
+    content,
+  } as Post;
 }
 
 export function getAllPosts(): Post[] {

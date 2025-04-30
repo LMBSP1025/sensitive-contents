@@ -3,7 +3,6 @@ import { HeroPost } from "@/app/_components/hero-post";
 import { Intro } from "@/app/_components/intro";
 import { MoreStories } from "@/app/_components/more-stories";
 import { getAllPosts } from "@/lib/api";
-import LoginTest from './_components/LoginTest';
 
 export default function Index() {
   const allPosts = getAllPosts();
@@ -20,7 +19,6 @@ export default function Index() {
           date={heroPost.date}
           slug={heroPost.slug}/>
         {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-        <LoginTest />
       </Container>
     </main>
   );
