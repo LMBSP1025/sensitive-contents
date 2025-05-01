@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from "../auth/[...nextauth]/authOptions";
+import { authOptions } from "@/lib/auth";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { Session, DefaultSession } from 'next-auth';
 
 const rateLimitMap = new Map<string, { count: number; last: number }>();
 const RATE_LIMIT = 5; // 1분에 5회
@@ -19,6 +20,8 @@ const redis = new Redis({
 const ratelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(5, "1 m"),
+  analytics: true, // 디버깅을 위한 분석 활성화
+  prefix: "comments_ratelimit", // 레이트 리밋 키 접두사 추가
 });
 
 function checkRateLimit(ip: string) {
@@ -36,6 +39,22 @@ function checkRateLimit(ip: string) {
   return false;
 }
 
+// CORS 헤더 설정 함수 추가
+function corsHeaders() {
+  return {
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,POST,DELETE,PATCH,OPTIONS',
+    'Access-Control-Allow-Headers': 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+  };
+}
+
+interface CustomSession extends Session {
+  user?: DefaultSession["user"] & {
+    id: string;
+  };
+}
+
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const postId = url.searchParams.get('postId');
@@ -47,46 +66,86 @@ export async function GET(req: NextRequest) {
   return NextResponse.json(comments);
 }
 
+// OPTIONS 메서드 추가 (CORS preflight 요청 처리)
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders() });
+}
+
 export async function POST(req: NextRequest) {
-  // 세션에서 userId 추출
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "누구세요?" }, { status: 401 });
-  }
-  const userId = session.user.id;
+  try {
+    const session = await getServerSession(authOptions as any) as Session;
+    
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: "인증이 필요합니다." }, 
+        { 
+          status: 401,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          }
+        }
+      );
+    }
 
-  // userId로 rate limit 체크
-  const { success } = await ratelimit.limit(userId);
+    const userId = session.user.id;
+    const { success } = await ratelimit.limit(userId);
 
-  if (!success) {
-    return NextResponse.json({ error: "댓글 작성 횟수가 초과되었습니다. 잠시 후에 다시 시도해주세요." }, { status: 429 });
-  }
+    if (!success) {
+      return NextResponse.json(
+        { error: "잠시 후 다시 시도해주세요." }, 
+        { status: 429, headers: corsHeaders() }
+      );
+    }
 
-  const { postId, text, parentId } = await req.json();
-  if (!postId || !text) {
-    return NextResponse.json({ error: 'postId, text required' }, { status: 400 });
-  }
-  if (!session.user.id) {
-    return NextResponse.json({ error: 'user.id missing in session' }, { status: 500 });
-  }
+    const body = await req.json();
+    const { postId, text, parentId } = body;
+    console.log('Request body:', { postId, text, parentId }); // 디버깅용
 
-  const comment = await prisma.comment.create({
-    data: {
-      postId,
-      userId: session.user.id,
-      text,
-      parentId: parentId || null,
-    },
-    include: { user: true },
-  });
-  return NextResponse.json(comment);
+    if (!postId || !text) {
+      return NextResponse.json(
+        { error: '필수 입력값이 누락되었습니다.' }, 
+        { status: 400, headers: corsHeaders() }
+      );
+    }
+
+    const comment = await prisma.comment.create({
+      data: {
+        postId,
+        userId: session.user.id,
+        text,
+        parentId: parentId || null,
+      },
+      include: { 
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          }
+        } 
+      },
+    });
+
+    return NextResponse.json(comment, { headers: corsHeaders() });
+  } catch (error) {
+    console.error('Comment creation error:', error); // 디버깅용
+    return NextResponse.json(
+      { error: "댓글 작성 중 오류가 발생했습니다." }, 
+      { status: 500, headers: corsHeaders() }
+    );
+  }
 }
 
 // 댓글 삭제
 export async function DELETE(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions as any) as Session;
   if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json(
+      { error: "인증이 필요합니다." }, 
+      { status: 401, headers: corsHeaders() }
+    );
   }
 
   const { searchParams } = new URL(req.url);
@@ -102,12 +161,12 @@ export async function DELETE(req: NextRequest) {
   }
 
   await prisma.comment.delete({ where: { id } });
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true }, { headers: corsHeaders() });
 }
 
 // 댓글 수정
 export async function PATCH(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions as any) as Session;
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
