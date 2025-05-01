@@ -9,6 +9,7 @@ type Comment = {
   text: string;
   createdAt: string;
   user?: {
+    id?: string;
     name?: string;
     email?: string;
     image?: string;
@@ -86,7 +87,9 @@ function CommentList({
   return (
     <>
       {comments.map(comment => {
-        const isMine = comment.user?.email === session?.user?.email;
+        const isMine =
+          (comment.user?.id && session?.user?.id && comment.user.id === session.user.id) ||
+          (comment.user?.email && session?.user?.email && comment.user.email === session.user.email);
         return (
           <div key={comment.id} className="my-8 relative">
             <div className="flex items-center mb-2">
