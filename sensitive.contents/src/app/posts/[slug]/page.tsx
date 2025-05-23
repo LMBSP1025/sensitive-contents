@@ -12,6 +12,7 @@ import { PostHeader } from "@/app/_components/post-header";
 import Footer from "@/app/_components/footer"; // Footer 컴포넌트 추가
 import ThreeCanvas from "@/app/_components/three-canvas"; // ThreeCanvas 컴포넌트 추가
 import dynamic from 'next/dynamic';
+import DateFormatter from "@/app/_components/date-formatter";
 
 // 클라이언트 컴포넌트를 동적으로 불러옴
 const CommentSection = dynamic(() => import('@/app/_components/comments/CommentSection'), {
@@ -50,12 +51,18 @@ export default async function Post({ params }: { params: { slug: string } }) {
         <Header />
         {post.showCanvas && <ThreeCanvas />} {/* showCanvas 속성 기반 조건부 렌더링 */}
         <article className="mb-32">
-          {!post.showCanvas && <PostHeader
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-          />}
+          {!post.showCanvas && (
+            <PostHeader
+              title={post.title}
+              coverImage={post.coverImage}
+              date={post.date}
+              showCoverImage={post.showCover !== false}
+            />
+          )}
           <PostBody content={content} />
+          <div className="mt-8 mb-4 text-gray-500">
+            <DateFormatter dateString={post.date} />
+          </div>
           {post.allowComments && <CommentSection postId={post.id} />} {/* 여기에 CommentSection 추가 */}
         </article>
       </Container>
@@ -72,6 +79,7 @@ type Post = {
   isHtml?: boolean;
   ogImage?: { url: string }; // Ensure ogImage is optional
   showCanvas?: boolean; // showCanvas 속성 추가
+  showCover?: boolean; // showCover 속성 추가
 } & {
   [key: string]: any;
 };

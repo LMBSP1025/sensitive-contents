@@ -17,7 +17,7 @@ const DateFormatter = ({ dateString }: Props) => {
     return <time dateTime={dateString}>Invalid Date</time>;
   }
 
-  return <time dateTime={dateString}>{format(date, "LLLL d, yyyy")}</time>;
+  return <time dateTime={dateString}>{format(date, "yyyy. M. d")}</time>;
 };
 
 export default DateFormatter;

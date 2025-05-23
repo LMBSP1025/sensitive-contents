@@ -2,6 +2,7 @@
 title: "첫 12월"
 excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilities morbi tempus."
 coverImage: "/assets/blog/2024-december/B111D10C-A7C1-41F3-BDF5-7C3913B703E6_1_201_a.jpeg"
+showCover: true
 date: "2024-12-31T01:57:07.322Z"
 audioTitle: "12월 플레이리스트"
 audioAuthor: "한로로, Colde, CAMO, Kid Milli, Tyler the Creator, Balming Tiger, Loopy, OSUN, JP, 실리카겔, 터치드, 쏜애플, (여자)아이들, 검정치마"

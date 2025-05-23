@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Container from "@/app/_components/container";
 import { EXAMPLE_PATH } from "@/lib/constants";
+import React from "react";
 
 const apiKey = "AIzaSyAmmT4-FHm8g6Ozkkq2_qvof9zekY2o7Vk"; // 유효한 YouTube Data API 키를 입력합니다.
 const apiUrl = `https://www.googleapis.com/youtube/v3/videos`; // API URL
@@ -14,6 +15,21 @@ type FooterProps = {
   audioAuthor: string;
   isList: boolean;
 };
+
+// 볼륨 쿠키 읽기 함수
+function getCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+}
+
+// 볼륨 쿠키 저장 함수
+function setCookie(name: string, value: string, days = 365) {
+  if (typeof document === 'undefined') return;
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+}
 
 export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps) {
   const playerRef = useRef<any>(null);  // Using any since YT types aren't available by default
@@ -27,6 +43,20 @@ export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const [volume, setVolume] = useState(50); // 볼륨 상태 추가
   const [isVolumeInitialized, setIsVolumeInitialized] = useState(false); // 볼륨 초기화 여부 추가
+  const [showVolumeNotice, setShowVolumeNotice] = useState(false);
+  const [showManualNotice, setShowManualNotice] = useState(false);
+
+  // 마운트 시 쿠키에서 볼륨 읽기
+  useEffect(() => {
+    const cookieVolume = getCookie('playerVolume');
+    if (cookieVolume) {
+      setVolume(Number(cookieVolume));
+      // 플레이어가 이미 있으면 즉시 반영
+      if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
+        playerRef.current.setVolume(Number(cookieVolume));
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const url = `${apiUrl}?part=${part}&id=${audioId}&key=${apiKey}`; // 완성된 요청 URL
@@ -62,22 +92,53 @@ export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps
           setDuration(event.target.getDuration());
           setIsLoading(false); // 로딩 상태 해제
 
-          // Set the volume to 0 initially
+          // 사용자 상호작용(내부 클릭 등)으로 진입했는지 감지
+          function isUserNavigation() {
+            if (typeof document === 'undefined') return false;
+            return document.referrer && document.referrer.startsWith(window.location.origin);
+          }
+          const userNavigated = isUserNavigation();
+          const cookieVolume = getCookie('playerVolume');
+          const targetVolume = cookieVolume ? Number(cookieVolume) : 50;
 
-
-          // Set the volume to 50 after a delay of 0.3 seconds
-          if (!isVolumeInitialized) {
-            if (playerRef.current) {
-              setVolume(0)
+          if (userNavigated) {
+            // 바로 저장된 볼륨으로
+            setVolume(targetVolume);
+            if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
+              playerRef.current.setVolume(targetVolume);
+            }
+            setIsVolumeInitialized(true);
+            // 자동재생
+            if (!isPlaying) {
+              playerRef.current.playVideo();
+              setIsPlaying(true);
+            }
+          } else {
+            // 기존 트릭(볼륨 0 → 딜레이 → 저장값)
+            if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
               playerRef.current.setVolume(0);
             }
+            setVolume(0);
+            setShowVolumeNotice(true);
             setTimeout(() => {
-              if (playerRef.current) {
-                setVolume(50)
-                playerRef.current.setVolume(50);
+              setVolume(targetVolume);
+              if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
+                playerRef.current.setVolume(targetVolume);
               }
-              setIsVolumeInitialized(true); // 볼륨 초기화 완료 표시
-            }, 500);
+              setIsVolumeInitialized(true);
+              setTimeout(() => setShowVolumeNotice(false), 2000);
+              // 만약 볼륨이 여전히 0이면(정책에 막힌 경우) 안내
+              setTimeout(() => {
+                if (playerRef.current && typeof playerRef.current.getVolume === 'function') {
+                  if (playerRef.current.getVolume() === 0) {
+                    setShowManualNotice(true);
+                    setTimeout(() => setShowManualNotice(false), 4000);
+                  }
+                }
+              }, 2200);
+            }, 1600);
+            // 버튼도 정지 상태로 명시
+            setIsPlaying(false);
           }
 
           // Start interval to update currentTime every 100ms
@@ -89,12 +150,6 @@ export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps
               console.log("Player is not ready yet.");
             }
           }, 100);
-
-          // 자동 재생 설정
-          if (!isPlaying) {
-            playerRef.current.playVideo();
-            setIsPlaying(true);
-          }
         } else {
           console.error("Player object does not have getCurrentTime method");
         }
@@ -208,12 +263,13 @@ export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps
     console.log(event.data);
     if (event.data === 1) {
       setDuration(playerRef.current?.getDuration() || 0);
+      setIsPlaying(true);
     }
     if (event.data === 0) {
       if (isList) {
         nextVideo();
       } else {
-        togglePlay();
+        setIsPlaying(false);
       }
     }
   }
@@ -233,6 +289,7 @@ export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps
     const newVolume = parseInt(event.target.value, 10);
     console.log(event.target.value, newVolume);
     setVolume(newVolume);
+    setCookie('playerVolume', String(newVolume));
     if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
       playerRef.current.setVolume(newVolume);
     }
@@ -240,6 +297,16 @@ export function Footer({ audioTitle, audioAuthor, audioId, isList }: FooterProps
 
   return (
     <footer className="bg-slate-200 border-t border-none dark:bg-slate-800 fixed w-full bottom-0 px-0">
+      {showVolumeNotice && (
+        <div className="fixed left-1/2 bottom-24 z-50 px-4 py-2 bg-black text-white text-sm -translate-x-1/2 shadow-lg animate-fadein">
+          플레이리스트 로딩 중...
+        </div>
+      )}
+      {showManualNotice && (
+        <div className="fixed left-1/2 bottom-24 z-50 px-4 py-2 bg-red-600 text-white text-sm -translate-x-1/2 shadow-lg animate-fadein">
+          소리가 나지 않으면 브라우저 정책으로 인한 것이오니 <br></br>재생 버튼을 다시 눌러주세요.
+        </div>
+      )}
       {audioId ? (
         <div
           ref={timelineRef}

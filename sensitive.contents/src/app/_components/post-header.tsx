@@ -8,18 +8,20 @@ type Props = {
   title: string;
   coverImage: string;
   date: string;
+  showCoverImage?: boolean;
 };
 
-export function PostHeader({ title, coverImage, date}: Props) {
+export function PostHeader({ title, coverImage, date, showCoverImage = true }: Props) {
   return (
     <>
       <PostTitle>{title}</PostTitle>
-      <div className="mb-8 md:mb-16 sm:mx-0">
-        <CoverImage title={title} src={coverImage} />
-      </div>
+      {coverImage && showCoverImage && (
+        <div className="mb-8 md:mb-16 sm:mx-0">
+          <CoverImage title={title} src={coverImage} />
+        </div>
+      )}
       <div className="mx-auto">
         <div className="mb-6 text-lg">
-          <DateFormatter dateString={date} />
         </div>
       </div>
     </>
