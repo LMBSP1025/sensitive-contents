@@ -99,48 +99,62 @@ export async function OPTIONS() {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSession();
-    console.log('POST request session:', session); // 세션 상태 로깅
-    
+    // 1. 세션 확인
+    const session = await getServerSession(authOptions as AuthOptions);
+    console.log('Session:', JSON.stringify(session, null, 2));
+
     if (!session?.user?.id) {
+      console.log('No session or user ID');
       return createErrorResponse('인증이 필요합니다.', 401);
     }
 
-    const { success } = await ratelimit.limit(session.user.id);
-    if (!success) {
-      return createErrorResponse('잠시 후 다시 시도해주세요.', 429);
+    // 2. 요청 본문 파싱
+    let body;
+    try {
+      body = await req.json();
+      console.log('Request body:', JSON.stringify(body, null, 2));
+    } catch (e) {
+      console.error('Failed to parse request body:', e);
+      return createErrorResponse('잘못된 요청 형식입니다.', 400);
     }
 
-    const body = await req.json();
-    console.log('Request body:', body); // 요청 데이터 로깅
-    const { postId, text, parentId }: CommentData = body;
+    const { postId, text, parentId } = body;
 
+    // 3. 입력값 검증
     if (!postId || !text) {
+      console.log('Missing required fields:', { postId, text });
       return createErrorResponse('필수 입력값이 누락되었습니다.', 400);
     }
 
-    const comment = await prisma.comment.create({
-      data: {
-        postId,
-        userId: session.user.id,
-        text,
-        parentId: parentId || null,
-      },
-      include: { 
-        user: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          }
-        } 
-      },
-    });
-
-    return NextResponse.json(comment, { headers: corsHeaders() });
+    // 4. 댓글 생성
+    try {
+      const comment = await prisma.comment.create({
+        data: {
+          postId,
+          userId: session.user.id,
+          text,
+          parentId: parentId || null,
+        },
+        include: { 
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            }
+          } 
+        },
+      });
+      console.log('Created comment:', JSON.stringify(comment, null, 2));
+      return NextResponse.json(comment, { headers: corsHeaders() });
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      return createErrorResponse('데이터베이스 오류가 발생했습니다.', 500, dbError);
+    }
   } catch (error) {
-    console.error('Comment creation error:', {
+    console.error('Unexpected error:', {
       error,
+      message: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined
     });
     return createErrorResponse('댓글 작성 중 오류가 발생했습니다.', 500, error);
