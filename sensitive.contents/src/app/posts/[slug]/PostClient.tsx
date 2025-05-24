@@ -16,9 +16,17 @@ const CommentSection = dynamic(() => import('@/app/_components/comments/CommentS
 });
 
 export default function PostClient({ post, content }: { post: Post, content: string }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const isAuthor = session?.user?.email === process.env.ALLOWED_EMAIL;
+  
+  // 디버깅을 위한 로그 추가
+  console.log('Session Status:', status);
+  console.log('Session Data:', session);
+  console.log('User Email:', session?.user?.email);
+  console.log('Allowed Email:', process.env.NEXT_PUBLIC_ALLOWED_EMAIL);
+  
+  const isAuthor = session?.user?.email === process.env.NEXT_PUBLIC_ALLOWED_EMAIL;
+  console.log('Is Author:', isAuthor);
 
   const handleDelete = async () => {
     if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) return;
@@ -53,7 +61,8 @@ export default function PostClient({ post, content }: { post: Post, content: str
           <div className="mt-8 mb-4 text-gray-500">
             <DateFormatter dateString={post.date} />
           </div>
-          {isAuthor && (
+          {post.allowComments && <CommentSection postId={post.slug} />}
+          {status === "authenticated" && isAuthor && (
             <div className="mt-8 flex gap-4">
               <button
                 onClick={() => router.push(`/editor/${post.slug}`)}
@@ -69,8 +78,6 @@ export default function PostClient({ post, content }: { post: Post, content: str
               </button>
             </div>
           )}
-          {post.allowComments && <CommentSection postId={post.id} />}
-
         </article>
       </Container>
       <Footer 
