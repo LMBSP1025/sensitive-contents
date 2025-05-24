@@ -77,14 +77,14 @@ function createErrorResponse(message: string, status: number, error?: any) {
 // API Handlers
 export async function GET(req: NextRequest) {
   try {
-    const url = new URL(req.url);
-    const postId = url.searchParams.get('postId');
+  const url = new URL(req.url);
+  const postId = url.searchParams.get('postId');
     
-    const comments = await prisma.comment.findMany({
-      where: { postId: postId || undefined },
-      orderBy: { createdAt: 'desc' },
-      include: { user: true },
-    });
+  const comments = await prisma.comment.findMany({
+    where: { postId: postId || undefined },
+    orderBy: { createdAt: 'desc' },
+    include: { user: true },
+  });
     
     return NextResponse.json(comments, { headers: corsHeaders() });
   } catch (error) {
@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     // 1. 세션 확인
     const session = await getServerSession(authOptions as AuthOptions);
     console.log('Session:', JSON.stringify(session, null, 2));
-
+    
     if (!session?.user?.id) {
       console.log('No session or user ID');
       return createErrorResponse('인증이 필요합니다.', 401);
@@ -128,25 +128,25 @@ export async function POST(req: NextRequest) {
 
     // 4. 댓글 생성
     try {
-      const comment = await prisma.comment.create({
-        data: {
-          postId,
-          userId: session.user.id,
-          text,
-          parentId: parentId || null,
-        },
-        include: { 
-          user: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
-            }
-          } 
-        },
-      });
+    const comment = await prisma.comment.create({
+      data: {
+        postId,
+        userId: session.user.id,
+        text,
+        parentId: parentId || null,
+      },
+      include: { 
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          }
+        } 
+      },
+    });
       console.log('Created comment:', JSON.stringify(comment, null, 2));
-      return NextResponse.json(comment, { headers: corsHeaders() });
+    return NextResponse.json(comment, { headers: corsHeaders() });
     } catch (dbError) {
       console.error('Database error:', dbError);
       return createErrorResponse('데이터베이스 오류가 발생했습니다.', 500, dbError);
@@ -167,23 +167,23 @@ export async function DELETE(req: NextRequest) {
     
     if (!session?.user?.id) {
       return createErrorResponse('인증이 필요합니다.', 401);
-    }
+  }
 
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id");
     
-    if (!id) {
+  if (!id) {
       return createErrorResponse('댓글 ID가 필요합니다.', 400);
-    }
+  }
 
-    const comment = await prisma.comment.findUnique({ where: { id } });
+  const comment = await prisma.comment.findUnique({ where: { id } });
     
-    if (!comment || comment.userId !== session.user.id) {
+  if (!comment || comment.userId !== session.user.id) {
       return createErrorResponse('삭제 권한이 없습니다.', 403);
-    }
+  }
 
-    await prisma.comment.delete({ where: { id } });
-    return NextResponse.json({ ok: true }, { headers: corsHeaders() });
+  await prisma.comment.delete({ where: { id } });
+  return NextResponse.json({ ok: true }, { headers: corsHeaders() });
   } catch (error) {
     console.error('Comment deletion error:', error);
     return createErrorResponse('댓글 삭제 중 오류가 발생했습니다.', 500);
@@ -196,25 +196,25 @@ export async function PATCH(req: NextRequest) {
     
     if (!session?.user?.id) {
       return createErrorResponse('인증이 필요합니다.', 401);
-    }
+  }
 
-    const { id, text } = await req.json();
+  const { id, text } = await req.json();
     
-    if (!id || !text) {
+  if (!id || !text) {
       return createErrorResponse('댓글 ID와 내용이 필요합니다.', 400);
-    }
+  }
 
-    const comment = await prisma.comment.findUnique({ where: { id } });
+  const comment = await prisma.comment.findUnique({ where: { id } });
     
-    if (!comment || comment.userId !== session.user.id) {
+  if (!comment || comment.userId !== session.user.id) {
       return createErrorResponse('수정 권한이 없습니다.', 403);
-    }
+  }
 
-    const updated = await prisma.comment.update({
-      where: { id },
-      data: { text },
-      include: { user: true },
-    });
+  const updated = await prisma.comment.update({
+    where: { id },
+    data: { text },
+    include: { user: true },
+  });
     
     return NextResponse.json(updated, { headers: corsHeaders() });
   } catch (error) {

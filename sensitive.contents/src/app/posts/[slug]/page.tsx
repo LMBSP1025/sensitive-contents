@@ -13,6 +13,10 @@ import Footer from "@/app/_components/footer"; // Footer 컴포넌트 추가
 import ThreeCanvas from "@/app/_components/three-canvas"; // ThreeCanvas 컴포넌트 추가
 import dynamic from 'next/dynamic';
 import DateFormatter from "@/app/_components/date-formatter";
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import PostClient from './PostClient';
+import type { Post } from '@/interfaces/post';
 
 // 클라이언트 컴포넌트를 동적으로 불러옴
 const CommentSection = dynamic(() => import('@/app/_components/comments/CommentSection'), {
@@ -20,69 +24,24 @@ const CommentSection = dynamic(() => import('@/app/_components/comments/CommentS
 });
 
 export default async function Post({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug) as Post;
-  if (!post) {
-    return notFound();
-  }
-
-  console.log("로드된 포스트:", post); // 콘솔 로그 추가
+  const post = getPostBySlug(params.slug);
+  if (!post) return notFound();
 
   let content = post.content;
-  let isHtml = post.isHtml || false;
+  let isHtml = (post as any).isHtml || false;
 
   if (isHtml) {
-    // HTML 파일인 경우 markdownToHtml을 건너뛰고 직접 사용
-    // <body> 태그 안의 내용만 추출
     const bodyStart = content.indexOf("<body>");
     const bodyEnd = content.indexOf("</body>");
-
     if (bodyStart !== -1 && bodyEnd !== -1) {
       content = content.substring(bodyStart + 6, bodyEnd).trim();
     }
   } else {
-    // Markdown 파일인 경우 markdownToHtml을 사용
     content = await markdownToHtml(post.content || "", isHtml);
   }
-  console.log("변환된 내용:\n", content); // 콘솔 로그 추가
 
-  return (
-    <main>
-      <Container>
-        <Header />
-        {post.showCanvas && <ThreeCanvas />} {/* showCanvas 속성 기반 조건부 렌더링 */}
-        <article className="mb-32">
-          {!post.showCanvas && (
-            <PostHeader
-              title={post.title}
-              coverImage={post.coverImage}
-              date={post.date}
-              showCoverImage={post.showCover !== false}
-            />
-          )}
-          <PostBody content={content} />
-          <div className="mt-8 mb-4 text-gray-500">
-            <DateFormatter dateString={post.date} />
-          </div>
-          {post.allowComments && <CommentSection postId={post.id} />} {/* 여기에 CommentSection 추가 */}
-        </article>
-      </Container>
-      <Footer audioId={post.audioId || ''} audioTitle={post.audioTitle || ''} audioAuthor={post.audioAuthor || ''} isList={post.isList || false}></Footer>
-    </main>
-  );
+  return <PostClient post={{...post, id: post.slug}} content={content} />;
 }
-
-type Post = {
-  audioId?: string;
-  audioTitle?: string;
-  audioAuthor?: string;
-  isList?: boolean;
-  isHtml?: boolean;
-  ogImage?: { url: string }; // Ensure ogImage is optional
-  showCanvas?: boolean; // showCanvas 속성 추가
-  showCover?: boolean; // showCover 속성 추가
-} & {
-  [key: string]: any;
-};
 
 type Comment = {
   text: string;
@@ -104,7 +63,7 @@ export function generateMetadata({ params }: Params): Metadata {
   const title = `${post.title} / sensitive.contents`;
 
   // Check if ogImage and url exist before accessing them
-  const images = post.ogImage && post.ogImage.url ? [post.ogImage.url] : [];
+  const images = post.ogImage?.url ? [post.ogImage.url] : [];
 
   return {
     title,

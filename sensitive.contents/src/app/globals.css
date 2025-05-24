@@ -48,3 +48,16 @@ input[type=range]::-webkit-slider-thumb {
     outline: none;
     background-color: #f7f7f7;
 }
+
+.w-md-editor {
+    --md-editor-bg-color: #ffffff;
+    --md-editor-border-color: #e5e7eb;
+}
+
+.w-md-editor-toolbar {
+    border-bottom: 1px solid var(--md-editor-border-color);
+}
+
+.w-md-editor-preview {
+    background-color: #f9fafb;
+}
