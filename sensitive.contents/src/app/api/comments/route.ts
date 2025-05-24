@@ -48,12 +48,28 @@ function corsHeaders() {
 }
 
 async function getSession(): Promise<CustomSession | null> {
-  return await getServerSession(authOptions as AuthOptions) as CustomSession;
+  try {
+    const session = await getServerSession(authOptions as AuthOptions);
+    console.log('Session data:', session); // 세션 데이터 로깅
+    return session as CustomSession;
+  } catch (error) {
+    console.error('Session error:', error); // 세션 에러 로깅
+    return null;
+  }
 }
 
-function createErrorResponse(message: string, status: number) {
+function createErrorResponse(message: string, status: number, error?: any) {
+  console.error('API Error:', {
+    message,
+    status,
+    error: error instanceof Error ? error.message : error
+  });
+  
   return NextResponse.json(
-    { error: message },
+    { 
+      error: message,
+      details: process.env.NODE_ENV === 'development' ? error?.message : undefined 
+    },
     { status, headers: corsHeaders() }
   );
 }
@@ -84,6 +100,7 @@ export async function OPTIONS() {
 export async function POST(req: NextRequest) {
   try {
     const session = await getSession();
+    console.log('POST request session:', session); // 세션 상태 로깅
     
     if (!session?.user?.id) {
       return createErrorResponse('인증이 필요합니다.', 401);
@@ -95,6 +112,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
+    console.log('Request body:', body); // 요청 데이터 로깅
     const { postId, text, parentId }: CommentData = body;
 
     if (!postId || !text) {
@@ -121,11 +139,11 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(comment, { headers: corsHeaders() });
   } catch (error) {
-    console.error('Comment creation error:', error);
-    return createErrorResponse(
-      '댓글 작성 중 오류가 발생했습니다.',
-      500
-    );
+    console.error('Comment creation error:', {
+      error,
+      stack: error instanceof Error ? error.stack : undefined
+    });
+    return createErrorResponse('댓글 작성 중 오류가 발생했습니다.', 500, error);
   }
 }
 
